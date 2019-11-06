@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bwei.mapper.GoodsDao">
+
+  <select id="getGoodsList" resultType="com.bwei.entity.Goods">
+    select g.gid,g.gename,g.gname,g.bid,g.sid,g.price,g.size,g.count,g.gset,g.img,b.bname,s.sname 
+    from 
+    goods g,brand b,goodskind s 
+    where 
+    g.bid=b.bid and b.bid=s.sid 
+    
+    GROUP BY g.gid
+  </select>
+  
+  <select id="getBrandList" resultType="com.bwei.entity.Brand" >
+    select * from brand
+  </select>
+  
+  <select id="getGoodsKindList" resultType="com.bwei.entity.GoodsKind" parameterType="int">
+    select * from goodskind where bid=#{0}
+  </select>
+  
+  <delete id="dels" parameterType="string">
+    delete from goods where gid in (${_parameter})
+  </delete>
+  
+  <insert id="add" parameterType="com.bwei.entity.Goods">
+    insert into goods(gname,gename,bid,sid,size,price,count,gset,img) values(#{gname},#{gename},#{bid},#{sid},#{size},#{price},#{count},#{gset},#{img})
+  </insert>
+  
+  <select id="getByIdList" resultType="com.bwei.entity.Goods" parameterType="int">
+    select * from goods where gid=#{0}
+  </select>
+  
+  <update id="update" parameterType="com.bwei.entity.Goods">
+    update goods set gname=#{gname},gename=#{gename},bid=#{bid},sid=#{sid},size=#{size},price=#{price},count=#{count},gset=#{gset},img=#{img} where gid=#{gid}
+  </update>
+</mapper>
